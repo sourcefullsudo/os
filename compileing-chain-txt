@@ -1,0 +1,15 @@
+compile with gcc: 
+
+gcc -I/usr/include/efi -I/usr/include/efi/x86_64 -I/usr/include/efi/protocol -fno-stack-protector -fpic -fshort-wchar -mno-red-zone -Wall -DEFI_FUNCTION_WRAPPER -c kernel.c -o kernel.o
+
+link:
+
+ld -nostdlib -znocombreloc -T /usr/lib/elf_x86_64_efi.lds -shared -Bsymbolic -L /usr/lib -L /usr/lib /usr/lib/crt0-efi-x86_64.o kernel.o -o kernel.so -lefi -lgnuefi
+
+objcopy to efi: 
+
+objcopy -j .text -j .sdata -j .data -j .rodata -j .dynamic -j .dynsym -j .rel -j .rela -j .rel.* -j .rela.* -j .reloc --target efi-app-x86_64 --subsystem=10 kernel.so kernel.efi
+
+run with qemu UEFI:
+
+qemu-system-x86_64 -bios /usr/share/ovmf/OVMF.fd -net none -drive file=fat:rw:efi_test,media=disk,format=raw
