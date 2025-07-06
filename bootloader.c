@@ -5,6 +5,7 @@
 
 EFI_STATUS EFIAPI efi_main(EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *SystemTable) {
     EFI_STATUS Status;
+    EFI_GUID FileSystemProtocol =              EFI_SIMPLE_FILE_SYSTEM_PROTOCOL_GUID;
     EFI_FILE_IO_INTERFACE *FileSystem;
     EFI_FILE_HANDLE RootDir, KernelFile;
     VOID *KernelBuffer;
